@@ -1,0 +1,62 @@
+#wrapper {
+  text-align: center;
+  }
+  input {
+    width:70px;
+  }
+  svg {
+    border:1px solid gray;
+    border-radius:10px;
+    height:1400px;
+    width:1400px;
+  }
+
+  circle {
+    stroke: black;
+  }
+
+  div.tooltip {
+    position: absolute;
+       text-align: center;
+       padding: .5rem;
+       background: #FFFFFF;
+       color: #313639;
+       border: 1px solid #313639;
+       border-radius: 8px;
+       pointer-events: none;
+       font-size: 1.3rem;
+       opacity: 0;
+  }
+
+  .line {
+    fill : none;
+    stroke: black;  
+    stroke-width: 0.5;
+    opacity: 0.5;
+  }
+
+  .badge {
+    background-color: #cccccc;
+    color : black;
+    font-weight: 500;
+  }
+
+  .btn-toolbar {
+    justify-content: center;
+  }
+
+  .input-group {
+    padding: 0 15px;
+  }
+
+  .paused {
+    background-color: #e77f7f;
+  }
+
+  .play {
+    background-color: #abdbba;
+  }
+
+  #yearBg {
+    font-size: 200px;
+  }
