@@ -11,6 +11,13 @@ var yScale;
 var dogPaw;
 var defs;
 
+var statusColor = new Map()
+
+statusColor.set(1, ['#85bf76', '#28a74591'])
+statusColor.set(2, ['#ba593d', '#a728288c'])
+statusColor.set(3, ['#ffdd00', '#00000054'])
+// yellow - #ffdd00, #00000054
+// red - #ba593d, #a728288c
 loadData();
 
 // On load of the page import the wrangled data.json file
@@ -85,15 +92,6 @@ function drawVisualisation() {
 
     outerRadius = Math.min(width, height) / 2;
 
-    data = [[1, 100], [2, 100], [3, 212], [4, 451], [5, 500],
-    [6, 100], [7, 100], [8, 212], [9, 451], [10, 500],
-    [11, 100], [12, 100], [13, 212], [14, 451], [15, 500],
-    [16, 100], [17, 100], [18, 212], [19, 451], [20, 500],
-    [21, 100], [22, 100], [23, 212], [24, 451], [25, 500],
-    [26, 100], [27, 100], [28, 212], [29, 451], [30, 500],
-    [31, 100], [32, 100], [33, 212], [34, 451], [35, 500],
-    [36, 100], [37, 100], [38, 212], [39, 451]]
-
     var x = d3.scaleBand()
         .range([0, 2 * Math.PI])
         .align(0)
@@ -111,8 +109,8 @@ function drawVisualisation() {
         .data(fullData)
         .enter()
         .append("path")
-        .attr('opacity', 0.2)
-        .attr("fill", "#ccc")
+        .attr('opacity', 0.25)
+        .attr("fill", d => statusColor.get(+d.Status)[0])
         .attr('transform', 'translate(' + width / 2 + ',' + height / 2 + ')')
         .attr("d", d3.arc()
             .innerRadius(100)
@@ -139,9 +137,9 @@ function drawVisualisation() {
                     .attr('cx', 0)
                     .attr('cy', 0)
                     .attr('r', 20)
-                    .attr('fill', '#85bf76')
+                    .attr('fill', d => statusColor.get(+d.Status)[0])
                     .attr('stroke-width', 10)
-                    .style('stroke', '#28a74591')
+                    .style('stroke', d => statusColor.get(+d.Status)[1])
                 )
                 .call(g => g.append('g')
                     .append('path')
@@ -149,31 +147,49 @@ function drawVisualisation() {
                     //.attr('transform', 'translate(' + yScale(300) + ',' + yScale(200) + ')')
                     .style('fill', function (d) {
                         return `url(${location}#maple-pattern)`
-                    })))
-
-    // .append("text")
-    // .text(function (d) { return (d[0]) })
-    // .attr("transform", function (d) { return (x(d[0]) + x.bandwidth() / 2 + Math.PI) % (2 * Math.PI) < Math.PI ? "rotate(180)" : "rotate(0)"; })
-    // .style("font-size", "20px")
-    // .attr("alignment-baseline", "middle")
-
-
-    svg.append('g')
-        .call(g => g.append('circle')
-            .attr('cx', yScale(300))
-            .attr('cy', yScale(200))
-            .attr('r', 40)
-            .attr('fill', '#85bf76')
-            .attr('stroke-width', 10)
-            .style('stroke', '#28a74591')
+                    })
+                )
         )
-        .call(g => g.append('g')
-            .append('path')
-            .attr("d", d3.symbol().size(2500).type(d3.symbolSquare))
-            .attr('transform', 'translate(' + yScale(300) + ',' + yScale(200) + ')')
-            .style('fill', function (d) {
-                return `url(${location}#maple-pattern)`
-            }))
+
+
+    svg.append("g")
+        .attr('transform', 'translate(' + width / 2 + ',' + height / 2 + ')')
+        .selectAll("g")
+        .data(fullData)
+        .enter()
+        .append("g")
+        .attr("text-anchor", function (d) { return (x(d.Id) + x.bandwidth() / 2 + Math.PI) % (2 * Math.PI) < Math.PI ? "end" : "start"; })
+        .attr("transform", function (d) {
+            return "rotate(" + ((x(d.Id) + x.bandwidth() / 2) * 180 / Math.PI - 90) + ")" + "translate(" + (y(d.Altitude) + 50) + ",0)"
+        })
+        .append("text")
+        .text(function (d) { return (d.Dogs) })
+        .attr("transform", function (d) { return (x(d.Id) + x.bandwidth() / 2 + Math.PI) % (2 * Math.PI) < Math.PI ? "rotate(180)" : "rotate(0)"; })
+        .style("font-size", "20px")
+        .style("fill", "white")
+        .attr("alignment-baseline", "middle")
+
+
+
+
+
+
+    // svg.append('g')
+    //     .call(g => g.append('circle')
+    //         .attr('cx', yScale(300))
+    //         .attr('cy', yScale(200))
+    //         .attr('r', 40)
+    //         .attr('fill', '#85bf76')
+    //         .attr('stroke-width', 10)
+    //         .style('stroke', '#28a74591')
+    //     )
+    //     .call(g => g.append('g')
+    //         .append('path')
+    //         .attr("d", d3.symbol().size(2500).type(d3.symbolSquare))
+    //         .attr('transform', 'translate(' + yScale(300) + ',' + yScale(200) + ')')
+    //         .style('fill', function (d) {
+    //             return `url(${location}#maple-pattern)`
+    //         }))
 
 
 }
