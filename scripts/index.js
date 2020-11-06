@@ -109,8 +109,8 @@ function drawVisualisation() {
         .data(fullData)
         .enter()
         .append("path")
-        .attr('opacity', 0.25)
-        .attr("fill", d => statusColor.get(+d.Status)[0])
+        .attr('opacity', 0.2)
+        .attr("fill", d => statusColor.get(+d.Status)[0]) //d => statusColor.get(+d.Status)[0]
         .attr('transform', 'translate(' + (width / 2 + + margin.left) + ',' + height / 2 + ')')
         .attr("d", d3.arc()
             .innerRadius(100)
@@ -164,11 +164,34 @@ function drawVisualisation() {
         })
         .append("text")
         .text(function (d) { return (d.Dogs) })
+        //.call(wrap, 200)
         .attr("transform", function (d) { return (x(d.Id) + x.bandwidth() / 2 + Math.PI) % (2 * Math.PI) < Math.PI ? "rotate(180)" : "rotate(0)"; })
         .style("font-size", "15px")
         .style("fill", "white")
         .attr("alignment-baseline", "middle")
+        .attr("class", "badge badge-pill badge-primary")
 
+
+    svg.append("g")
+        .attr('transform', 'translate(' + (width / 2 + + margin.left) + ',' + height / 2 + ')')
+        .selectAll("g")
+        .data(fullData)
+        .enter()
+        .append("g")
+        .attr("text-anchor", function (d) { return (x(d.Id) + x.bandwidth() / 2 + Math.PI) % (2 * Math.PI) < Math.PI ? "end" : "start"; })
+        .attr("transform", function (d) {
+            return "rotate(" + ((x(d.Id) + x.bandwidth() / 2) * 180 / Math.PI - 90) + ")" + "translate(" + (110) + ",0)"
+        })
+        .append("text")
+        .text(function (d) { return (d.Date) })
+        //.call(wrap, 200)
+        .attr("transform", function (d) { return (x(d.Id) + x.bandwidth() / 2 + Math.PI) % (2 * Math.PI) < Math.PI ? "rotate(180)" : "rotate(0)"; })
+        .style("font-size", "14px")
+        .style("font-family", "monospace")
+        .style("font-weight", 700)
+        .style("font-style", "italic")
+        .style("fill", "#9e9e9e")
+        .attr("alignment-baseline", "middle")
 
 
 
@@ -192,6 +215,31 @@ function drawVisualisation() {
     //         }))
 
 
+}
+
+function wrap(text, width) {
+    text.each(function () {
+        let text = d3.select(this),
+            words = text.text().split(/\s+/).reverse(),
+            word,
+            line = [],
+            lineNumber = 0,
+            lineHeight = 1.1, // ems
+            x = text.attr("x"),
+            y = text.attr("y"),
+            dy = 1.1,
+            tspan = text.text(null).append("tspan").attr("x", x).attr("y", y);
+        while (word = words.pop()) {
+            line.push(word);
+            tspan.text(line.join(" "));
+            if (tspan.node().getComputedTextLength() > width) {
+                line.pop();
+                tspan.text(line.join(" "));
+                line = [word];
+                tspan = text.append("tspan").attr("x", x).attr("y", y).attr("dy", ++lineNumber * lineHeight + dy + "em").text(word);
+            }
+        }
+    });
 }
 
 function starGenerator(g) {
