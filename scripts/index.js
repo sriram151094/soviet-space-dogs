@@ -1,6 +1,6 @@
-const margin = { top: 50, right: 50, bottom: 50, left: 50 };
-const width = 1400 - margin.left - margin.right;
-const height = 1400 - margin.top - margin.bottom;
+const margin = { top: 100, right: 100, bottom: 100, left: 100 };
+const width = 1600;
+const height = 1600;
 const speed = 3
 
 var fullData;
@@ -31,8 +31,8 @@ function loadData() {
         svg.append('rect')
             .attr('x', 0)
             .attr('y', 0)
-            .attr('width', width + margin.left + margin.right)
-            .attr('height', height + margin.top + margin.bottom);
+            .attr('width', width)
+            .attr('height', height);
 
         const g = svg.append('g').attr('transform', `translate(${width / 2}, ${height / 2})`)
         setInterval(() => {
@@ -51,7 +51,7 @@ function loadData() {
             let earthBg = svg.select("#earth")
             earthBg.node().appendChild(svgNode);
             earthBg.attr('opacity', 0.8)
-                .attr('transform', `translate(${width / 2 - 150}, ${height / 2 - 150})`)
+                .attr('transform', `translate(${width / 2 - 150 + margin.left}, ${height / 2 - 150})`)
 
         })
 
@@ -90,7 +90,7 @@ function drawVisualisation() {
         .domain([0, 500])
         .range([0, height])
 
-    outerRadius = Math.min(width, height) / 2;
+    outerRadius = Math.min(width, height) / 2 - 100;
 
     var x = d3.scaleBand()
         .range([0, 2 * Math.PI])
@@ -111,7 +111,7 @@ function drawVisualisation() {
         .append("path")
         .attr('opacity', 0.25)
         .attr("fill", d => statusColor.get(+d.Status)[0])
-        .attr('transform', 'translate(' + width / 2 + ',' + height / 2 + ')')
+        .attr('transform', 'translate(' + (width / 2 + + margin.left) + ',' + height / 2 + ')')
         .attr("d", d3.arc()
             .innerRadius(100)
             .outerRadius(function (d) { return y(d.Altitude); })
@@ -121,7 +121,7 @@ function drawVisualisation() {
             .padRadius(500))
 
     svg.append("g")
-        .attr('transform', 'translate(' + width / 2 + ',' + height / 2 + ')')
+        .attr('transform', 'translate(' + (width / 2 + margin.left) + ',' + height / 2 + ')')
         .selectAll("g")
         .data(fullData)
         .enter()
@@ -153,7 +153,7 @@ function drawVisualisation() {
 
 
     svg.append("g")
-        .attr('transform', 'translate(' + width / 2 + ',' + height / 2 + ')')
+        .attr('transform', 'translate(' + (width / 2 + + margin.left) + ',' + height / 2 + ')')
         .selectAll("g")
         .data(fullData)
         .enter()
@@ -165,7 +165,7 @@ function drawVisualisation() {
         .append("text")
         .text(function (d) { return (d.Dogs) })
         .attr("transform", function (d) { return (x(d.Id) + x.bandwidth() / 2 + Math.PI) % (2 * Math.PI) < Math.PI ? "rotate(180)" : "rotate(0)"; })
-        .style("font-size", "20px")
+        .style("font-size", "15px")
         .style("fill", "white")
         .attr("alignment-baseline", "middle")
 
