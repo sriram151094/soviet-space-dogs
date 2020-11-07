@@ -15,9 +15,9 @@ var statusColor = new Map()
 
 statusColor.set(1, ['#85bf76', '#28a74591'])
 statusColor.set(2, ['#ba593d', '#a728288c'])
-statusColor.set(3, ['#ffdd00', '#00000054'])
+statusColor.set(3, ['#ffdd00', '#a792288c'])
 // yellow - #ffdd00, #00000054
-// red - #ba593d, #a728288c
+// red - #ba593d, #a728288c, #ff5722
 loadData();
 
 // On load of the page import the wrangled data.json file
@@ -39,8 +39,50 @@ function loadData() {
             starGenerator(g);
         }, 5);
 
+        svg.append('circle')
+            .attr('id', 'orbit1')
+            .attr('r', 670)
+            .attr('opacity', 0.5)
+            .attr('transform', 'translate(' + (width / 2 + margin.left) + ',' + height / 2 + ')')
+            .style('stroke', 'white')
+            .style('stroke-dasharray', 5)
+
+        svg.append('circle')
+            .attr('id', 'orbit2')
+            .attr('r', 423)
+            .attr('opacity', 0.5)
+            .attr('transform', 'translate(' + (width / 2 + margin.left) + ',' + height / 2 + ')')
+            .style('stroke', 'white')
+            .style('stroke-dasharray', 5)
+
+        svg.append('circle')
+            .attr('id', 'orbit3')
+            .attr('r', 300)
+            .attr('opacity', 0.5)
+            .attr('transform', 'translate(' + (width / 2 + margin.left) + ',' + height / 2 + ')')
+            .style('stroke', 'white')
+            .style('stroke-dasharray', 5)
+
+        svg.append('circle')
+            .attr('id', 'orbit4')
+            .attr('r', 100)
+            .attr('opacity', 0.5)
+            .attr('transform', 'translate(' + (width / 2 + margin.left) + ',' + height / 2 + ')')
+            .style('stroke', 'white')
+            .style('stroke-dasharray', 2)
+
+
         svg.append('g')
             .attr('id', 'earth')
+
+
+
+        // Add tooltip          
+        toolTip = d3.select("body").append("div")
+            .attr("class", "tooltip")
+
+        console.log("tooltip")
+        console.log(toolTip)
 
         defs = svg.append('svg:defs')
 
@@ -74,11 +116,102 @@ function loadData() {
 
 
 
+
+        drawLegend()
         drawVisualisation()
 
 
 
     })
+}
+
+function drawLegend() {
+    svg.append('circle')
+        //.attr('transform', 'translate(1500, 200)')
+        .attr('cx', (width - margin.right - 50))
+        .attr('cy', margin.top)
+        .attr('r', 80)
+        .style('stroke', 'white')
+        .style('opacity', 0.7)
+        .style('stroke-dasharray', 4)
+
+    svg.append('circle')
+        //.attr('transform', 'translate(1500, 200)')
+        .attr('cx', (width - margin.right - 50))
+        .attr('cy', margin.top)
+        .attr('r', 55)
+        .style('stroke', 'white')
+        .style('opacity', 0.7)
+        .style('stroke-dasharray', 4)
+
+    svg.append('circle')
+        //.attr('transform', 'translate(1500, 200)')
+        .attr('cx', (width - margin.right - 50))
+        .attr('cy', margin.top)
+        .attr('r', 30)
+        .style('stroke', 'white')
+        .style('opacity', 0.5)
+        .style('stroke-dasharray', 4)
+
+    svg.append('text')
+        .attr('x', (width - margin.right - 35))
+        .attr('y', margin.top)
+        .style('fill', 'white')
+        .style('font-size', '12px')
+        .style('font-family', 'monospace')
+        .text('100km')
+
+    svg.append('text')
+        .attr('x', (width - margin.right - 20))
+        .attr('y', margin.top - 30)
+        .style('fill', 'white')
+        .style('font-size', '12px')
+        .style('font-family', 'monospace')
+        .text('215km')
+
+    svg.append('text')
+        .attr('x', (width - margin.right - 10))
+        .attr('y', 30)
+        .style('fill', 'white')
+        .style('font-size', '12px')
+        .style('font-family', 'monospace')
+        .text('Orbit(>500km)')
+
+
+    statusLabels = ["All dogs survived the mission",
+        "All dogs died in the mission",
+        "Some dogs died in the mission"]
+
+    for (let i = 1; i <= 3; i++) {
+        svg.append('g')
+            .attr('transform', 'translate(' + (margin.top - 50) + ',' + (margin.left - 50 + ((i - 1) * 60)) + ')')
+            .call(g => {
+                g.append('circle')
+                    .attr('cx', 0)
+                    .attr('cy', 0)
+                    .attr('r', 20)
+                    .attr('fill', statusColor.get(i)[0])
+                    .attr('stroke-width', 10)
+                    .style('stroke', statusColor.get(i)[1])
+            }
+            )
+            .call(g => g.append('path')
+                .attr("d", d3.symbol().size(2500).type(d3.symbolSquare))
+                //.attr('transform', 'translate(' + yScale(300) + ',' + yScale(200) + ')')
+                .style('fill', function (d) {
+                    return `url(${location}#maple-pattern)`
+                })
+
+            )
+            .call(g => g.append('text')
+                .attr('x', 30)
+                .attr('dy', '5')
+                .style('fill', '#e0e0e0')
+                .style('font-family', 'monospace')
+                .attr('font-size', '12px')
+                .text(statusLabels[i - 1]))
+    }
+
 }
 
 function drawVisualisation() {
@@ -114,41 +247,49 @@ function drawVisualisation() {
         .attr('transform', 'translate(' + (width / 2 + + margin.left) + ',' + height / 2 + ')')
         .attr("d", d3.arc()
             .innerRadius(100)
-            .outerRadius(function (d) { return y(d.Altitude); })
+            .outerRadius(function (d) { console.log(y(d.Altitude)); return y(d.Altitude); })
             .startAngle(function (d) { return x(d.Id); })
             .endAngle(function (d) { return x(d.Id) + x.bandwidth(); })
             .padAngle(0.01)
             .padRadius(500))
 
     svg.append("g")
+        .attr('id', 'plot')
         .attr('transform', 'translate(' + (width / 2 + margin.left) + ',' + height / 2 + ')')
         .selectAll("g")
         .data(fullData)
         .enter()
         .append("g")
+        .attr('id', d => d.Id)
         .attr("text-anchor", function (d) { return (x(d.Id) + x.bandwidth() / 2 + Math.PI) % (2 * Math.PI) < Math.PI ? "end" : "start"; })
         .attr("transform", function (d) {
             return "rotate(" + ((x(d.Id) + x.bandwidth() / 2) * 180 / Math.PI - 90) + ")" + "translate(" + (y(d.Altitude) + 10) + ",0)"
                 + "rotate(" + -((x(d.Id) + x.bandwidth() / 2) * 180 / Math.PI - 90) + ")";
         })
+        .call(g => {
+            g.append('circle')
+                .attr('cx', 0)
+                .attr('cy', 0)
+                .attr('r', 20)
+                .attr('fill', d => statusColor.get(+d.Status)[0])
+                .attr('stroke-width', 10)
+                .style('stroke', d => statusColor.get(+d.Status)[1])
+        }
+        )
+        .call(g => g.append('path')
+            .attr("d", d3.symbol().size(2500).type(d3.symbolSquare))
+            //.attr('transform', 'translate(' + yScale(300) + ',' + yScale(200) + ')')
+            .style('fill', function (d) {
+                return `url(${location}#maple-pattern)`
+            })
+
+        )
         .call(g =>
-            g.append('g')
-                .call(g => g.append('circle')
-                    .attr('cx', 0)
-                    .attr('cy', 0)
-                    .attr('r', 20)
-                    .attr('fill', d => statusColor.get(+d.Status)[0])
-                    .attr('stroke-width', 10)
-                    .style('stroke', d => statusColor.get(+d.Status)[1])
-                )
-                .call(g => g.append('g')
-                    .append('path')
-                    .attr("d", d3.symbol().size(2500).type(d3.symbolSquare))
-                    //.attr('transform', 'translate(' + yScale(300) + ',' + yScale(200) + ')')
-                    .style('fill', function (d) {
-                        return `url(${location}#maple-pattern)`
-                    })
-                )
+            g.on('mouseover', function (event, d) {
+                highlightCircle(event, d, this)
+            }
+            )
+                .on('mouseout', function (event) { dehighlightCircle(this) })
         )
 
 
@@ -167,13 +308,15 @@ function drawVisualisation() {
         //.call(wrap, 200)
         .attr("transform", function (d) { return (x(d.Id) + x.bandwidth() / 2 + Math.PI) % (2 * Math.PI) < Math.PI ? "rotate(180)" : "rotate(0)"; })
         .style("font-size", "15px")
-        .style("fill", "white")
+        .attr("opacity", 0.8)
+        .style("font-family", "monospace")
+        .style("fill", "#e0e0e0") //white
         .attr("alignment-baseline", "middle")
-        .attr("class", "badge badge-pill badge-primary")
+        .attr("class", "badge-pill badge-primary")
 
-
+    // Add Launch dates on the bar area
     svg.append("g")
-        .attr('transform', 'translate(' + (width / 2 + + margin.left) + ',' + height / 2 + ')')
+        .attr('transform', 'translate(' + (width / 2 + margin.left) + ',' + height / 2 + ')')
         .selectAll("g")
         .data(fullData)
         .enter()
@@ -193,10 +336,6 @@ function drawVisualisation() {
         .style("fill", "#9e9e9e")
         .attr("alignment-baseline", "middle")
 
-
-
-
-
     // svg.append('g')
     //     .call(g => g.append('circle')
     //         .attr('cx', yScale(300))
@@ -215,6 +354,47 @@ function drawVisualisation() {
     //         }))
 
 
+}
+
+
+function highlightCircle(event, data, element) {
+
+    d3.select(element).raise()
+
+    d3.select(element)
+        .select('circle')
+        .transition(100)
+        .attr('r', 30)
+
+    drawTooltip(event, data)
+    //#ff5722
+}
+
+function dehighlightCircle(element) {
+    d3.select(element)
+        .select('circle')
+        .transition(100)
+        .attr('r', 20)
+    removeTooltip()
+}
+
+function drawTooltip(event, data) {
+    toolTip.transition()
+        .duration(50)
+        .style("opacity", 1);
+    toolTip.html("Dogs on mission: " + data.Dogs + "<br>" +
+        "Status: " + data.Result + "<br>" +
+        "Launch Date: " + data.Date + "<br>" +
+        "Altitude: " + data.Altitude + " km")
+        .style("left", (event.pageX + 10) + "px")
+        .style("top", (event.pageY - 10) + "px")
+        .style("text-align", "left");
+}
+
+function removeTooltip() {
+    toolTip.transition()
+        .duration('50')
+        .style("opacity", 0)
 }
 
 function wrap(text, width) {
