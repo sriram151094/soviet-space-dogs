@@ -1,3 +1,18 @@
+# Soviet Space Dogs
+
+## Dataset
+
+The dataset contains all the mission information from 1951 - 1961 in which dogs flew to the outer space.
+
+The visualization has the following attributes:
+   1. Date of flight (Temporal)
+   2. Status of the misssion (Categorical)
+   3. Altitude upto which the rockets flew (Quantitative)
+   4. Names of the dogs in each mission
+   
+For more usability, additional information like explanation of the misison status and dates are shown on hovering over a particular glyph representing each data point on the chart.   
+   
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 # Innovative Visualization Design
 
 In this homework, you will create a unique visualization that goes beyond the "common chart types" that you already exist. **This assignment is worth 10 points.**
