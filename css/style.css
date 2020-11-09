@@ -61,3 +61,14 @@
   #yearBg {
     font-size: 200px;
   }
+
+  html, body {
+    background-color: #000000;
+  }
+
+  #intro p {
+    color: white;
+    opacity: 0.7;
+    font-size: 28px;
+    font-family: monospace;
+  }
