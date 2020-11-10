@@ -4,6 +4,8 @@
 
 The dataset contains all the mission information from 1951 - 1961 in which dogs flew to the outer space.
 
+Data was cleansed and few additional support paramters were added. Final dataset can be found in **data/data.csv**
+
 The visualization has the following attributes:
    1. Date of flight (Temporal)
    2. Status of the misssion (Categorical)
@@ -12,7 +14,6 @@ The visualization has the following attributes:
    
 For more usability, additional information like explanation of the misison status and dates are shown on hovering over a particular glyph representing each data point on the chart.   
    
----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 # Innovative Visualization Design
 
 In this homework, you will create a unique visualization that goes beyond the "common chart types" that you already exist. **This assignment is worth 10 points.**
