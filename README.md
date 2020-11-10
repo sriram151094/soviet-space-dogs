@@ -1,6 +1,6 @@
 # Soviet Space Dogs
 
-## Dataset
+## Dataset and design overview
 
 The dataset contains all the mission information from 1951 - 1961 in which dogs flew to the outer space.
 
