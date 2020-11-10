@@ -72,3 +72,8 @@
     font-size: 28px;
     font-family: monospace;
   }
+
+  @font-face {
+    font-family: myfont;
+    src: url(CasanovaScotia-Xm0K.ttf);
+  }
