@@ -19,5 +19,5 @@ The visualization has the following attributes:
    
 ## Implementation snapshot
 
-![alt text] (https://github.com/sriram151094/soviet-space-dogs/blob/main/images/spacedogs.gif)
+![alt text](https://github.com/sriram151094/soviet-space-dogs/blob/main/images/spacedogs.gif)
    
