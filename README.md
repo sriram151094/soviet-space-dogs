@@ -16,3 +16,8 @@ The visualization has the following attributes:
    3. Altitude upto which the rockets flew (Quantitative)
    4. Names of the dogs in each mission
    
+   
+## Implementation snapshot
+
+![alt text] (https://github.com/sriram151094/soviet-space-dogs/blob/main/images/spacedogs.gif)
+   
